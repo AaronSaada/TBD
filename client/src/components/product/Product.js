@@ -1,4 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { deleteProduct } from '../../api/apiCalls'
+
 const API_URL = "http://localhost:4000"
 
 function Product ({
@@ -27,7 +30,20 @@ function Product ({
                     ? `Stock : ${availableQuantity}` 
                     : "Rupture de stock"
                 }
+                <p>{productsDescription}</p>
             </div>
+            <Link to={`/updateProduct/${idproducts}`}>
+                <button>
+                    Modifer
+                </button>
+            </Link>
+            <button
+                onClick={async () => {
+                    await deleteProduct(idproducts, productsImage)
+                }}
+            >
+                Supprimer
+            </button>
         </div>
     )
 }

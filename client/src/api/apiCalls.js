@@ -64,3 +64,16 @@ export const deleteProduct = async (idproducts, productsImage) => {
 
 };
 
+export const uploadProductImage = async (FormData) => {
+    
+    try{
+        const res = await axios.post("http://localhost:4000/imageupload/", FormData);
+        return res.data;
+    }catch(err){
+        console.log(err);
+        return {
+            error: err.message
+        };
+    }
+
+};

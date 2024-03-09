@@ -1,8 +1,27 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const mysql = require("mysql")
-const dotenv = require("dotenv")
+const mysql = require("mysql");
+const dotenv = require("dotenv");
+const multer = require("multer");
+const fs = require("fs");
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads");
+    },
+    filename: (req, file, cb) => {
+        console.log(req.body, "in");
+        cb(
+            null,
+            `${req.body.idproducts}${path.extname(file.originalname)}`
+        );
+    }
+});
+
+const upload = multer({
+    storage: storage
+});
 
 dotenv.config({
     path: '../.env'
@@ -54,6 +73,21 @@ app.post("/products", (req, res) => {
             data
         })
     });
+
+});
+
+app.post("/imageupload", upload.single("productsImage"), (req, res) => {
+
+    try{
+        console.log(req.file);
+        return res.json({
+            data: req.file.filename
+        });
+    }catch(err){
+        res.json({
+            error: err.message
+        });
+    }
 
 });
 
